@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hundi Desk</title>
+<style>
+  :root { --bg:#f7f7f5; --fg:#1b1b1b; --muted:#6b6b6b; --card:#fff; --line:#e3e3df; --ok:#16794c; --bad:#b42318; --accent:#2b5bd7; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#141414; --fg:#ececec; --muted:#9a9a9a; --card:#1d1d1d; --line:#2e2e2e; --ok:#4cc38a; --bad:#ff6b5e; --accent:#7aa2ff; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:14px/1.5 system-ui, sans-serif; }
+  main { max-width: 1000px; margin: 0 auto; padding: 24px 16px; }
+  h1 { font-size: 22px; margin: 0 0 4px; } h2 { font-size: 15px; margin: 24px 0 8px; }
+  .muted { color: var(--muted); }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; } td, th { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  th { font-weight:600; color:var(--muted); font-size:12px; } td.num { text-align:right; font-variant-numeric: tabular-nums; }
+  .ev { display:grid; grid-template-columns: 70px 150px 1fr; gap:8px; padding:6px 0; border-bottom:1px solid var(--line); }
+  .ev:last-child { border-bottom:0; } .kind { font-family: ui-monospace, monospace; font-size:12px; }
+  .blocked { color: var(--bad); } .settled { color: var(--ok); } a { color: var(--accent); }
+  code { font-size: 12px; word-break: break-all; }
+  @media (max-width: 640px) { .ev { grid-template-columns: 1fr; gap:0; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Hundi Desk</h1>
+  <div class="muted" id="meta">Connecting…</div>
+  <h2>Receivables and waterfall</h2>
+  <div class="card"><table><thead><tr><th>Invoice</th><th>Vault</th><th class="num">Face</th><th class="num">Lender</th><th class="num">Protocol</th><th class="num">Seller (at settle)</th></tr></thead><tbody id="rx"></tbody></table></div>
+  <h2>Timeline</h2>
+  <div class="card" id="timeline"></div>
+</main>
+<script>
+  const EXPLORERS = { 177: "https://hsk.blockscout.com/tx/" }; // testnet explorer: [VERIFY]
+  const usd = (v) => v == null ? "–" : (Number(String(v).replace(/n$/, "")) / 1e6).toLocaleString("en-US", { maximumFractionDigits: 2 });
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  let chainId = null; const settled = {};
+  const txLink = (h) => !h ? "" : EXPLORERS[chainId] ? ` <a href="${EXPLORERS[chainId]}${h}" target="_blank" rel="noopener">tx</a>` : ` <code>${h.slice(0, 10)}…</code>`;
+  function renderRx(state) {
+    document.getElementById("rx").innerHTML = Object.values(state.receivables).map((r) => {
+      const s = settled[r.termsHash] || {};
+      return `<tr><td>${esc(r.invoice.invoiceNumber)}</td><td><code>${r.vault}</code></td><td class="num">${usd(r.terms.faceAmount)}</td>
+        <td class="num">${usd(s.lenderPaid)}</td><td class="num">${usd(s.protocolPaid)}</td><td class="num">${usd(s.sellerPaid)}</td></tr>`;
+    }).join("") || `<tr><td colspan="6" class="muted">No receivables yet. Run <code>pnpm e2e</code>.</td></tr>`;
+  }
+  function addEvent(ev) {
+    if (ev.kind === "vault.settled" && ev.data) settled[ev.termsHash] = ev.data;
+    const cls = ev.kind === "attack.blocked" || ev.kind.endsWith("refused") ? "blocked" : ev.kind === "vault.settled" ? "settled" : "";
+    const div = document.createElement("div"); div.className = "ev";
+    div.innerHTML = `<span class="muted">${new Date(ev.at * 1000).toLocaleTimeString()}</span><span class="kind ${cls}">${esc(ev.kind)}</span><span>${esc(ev.summary)}${txLink(ev.tx)}</span>`;
+    document.getElementById("timeline").prepend(div);
+  }
+  fetch("/api/state").then((r) => r.json()).then((state) => {
+    chainId = state.chainId;
+    document.getElementById("meta").textContent = `Chain ${chainId} · ${Object.keys(state.receivables).length} receivable(s) · live`;
+    const es = new EventSource("/api/events");
+    es.onmessage = (m) => { addEvent(JSON.parse(m.data)); renderRx(state); };
+    setInterval(() => fetch("/api/state").then((r) => r.json()).then((s) => { state = s; renderRx(s); }), 5000);
+    renderRx(state);
+  });
+</script>
+</body>
+</html>

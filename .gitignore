@@ -22,3 +22,7 @@ contracts/broadcast/**/dry-run/
 *.sqlite-journal
 
 .DS_Store
+
+# local-only chain artefacts
+contracts/deployments/31337.json
+apps/desk/data/31337.json

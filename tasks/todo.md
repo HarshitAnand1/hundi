@@ -32,7 +32,7 @@ Files:
 - [ ] Small real USDC.e payment into a predicted/created vault address (via HSP if credentials, else self-relay EIP-3009) — answers "can pay_to be a contract?"
 - [ ] If rejected: receiver-wallet forwarder fallback, recorded in DECISIONS.md
 
-## Phase D: sdk + desk + e2e — SDK core DONE 16:25 (51 vitest: both verify fns, all 20 codes, vectors, money); desk + e2e next
+## Phase D: sdk + desk + e2e — DONE 18:10: SDK 51 tests, desk 4 tests, e2e (5 attacks blocked, waterfall exact) passes on anvil
 - `pnpm-workspace.yaml`, root `package.json` (`test:all`), `tsconfig.base.json`
 - `packages/sdk/src/types.ts` — zod schemas: Invoice, Terms, Acceptance, Cart, PaymentMandate
 - `packages/sdk/src/verifyInvoice.ts` + test — all 12 refusal codes, table-driven
