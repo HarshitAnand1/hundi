@@ -1,0 +1,12 @@
+{
+  "name": "hundi",
+  "private": true,
+  "packageManager": "pnpm@10.34.9",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test:contracts": "cd contracts && forge test",
+    "test:ts": "pnpm -r --if-present test",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "test:all": "pnpm test:contracts && pnpm typecheck && pnpm test:ts"
+  }
+}
