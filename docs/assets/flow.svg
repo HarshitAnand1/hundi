@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="700" viewBox="0 0 1600 700" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1600" height="700" fill="#ffffff"/>
+  <text x="800" y="70" text-anchor="middle" font-size="44" font-weight="700" fill="#0f2a4a">Hundi: the repayment path is fixed before the loan</text>
+  <defs><marker id="a" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#0f2a4a"/></marker></defs>
+  <g font-size="26" text-anchor="middle">
+    <rect x="60" y="150" width="280" height="120" rx="16" fill="#e8eef7" stroke="#0f2a4a" stroke-width="3"/>
+    <text x="200" y="200" font-weight="700" fill="#0f2a4a">Seller agent</text><text x="200" y="238" fill="#333">issues signed invoice</text>
+    <rect x="460" y="150" width="300" height="120" rx="16" fill="#e8eef7" stroke="#0f2a4a" stroke-width="3"/>
+    <text x="610" y="200" font-weight="700" fill="#0f2a4a">Buyer agent</text><text x="610" y="238" fill="#333">code checks · signs EIP-712</text>
+    <rect x="880" y="150" width="300" height="120" rx="16" fill="#e8eef7" stroke="#0f2a4a" stroke-width="3"/>
+    <text x="1030" y="200" font-weight="700" fill="#0f2a4a">Lending pool</text><text x="1030" y="238" fill="#333">advances 90% now</text>
+    <rect x="1260" y="150" width="280" height="120" rx="16" fill="#fff4dc" stroke="#f2a516" stroke-width="3"/>
+    <text x="1400" y="200" font-weight="700" fill="#0f2a4a">Seller paid</text><text x="1400" y="238" fill="#333">$8,820 in seconds</text>
+    <rect x="460" y="430" width="300" height="130" rx="16" fill="#e8eef7" stroke="#0f2a4a" stroke-width="3"/>
+    <text x="610" y="480" font-weight="700" fill="#0f2a4a">Buyer pays via HSP</text><text x="610" y="518" fill="#333">pay_to = vault</text>
+    <rect x="880" y="410" width="320" height="170" rx="16" fill="#0f2a4a"/>
+    <text x="1040" y="460" font-weight="700" fill="#f2a516">CREATE2 vault</text><text x="1040" y="498" fill="#ffffff">address = f(loan terms)</text><text x="1040" y="536" fill="#ffffff">set before lending</text>
+    <text x="1400" y="440" font-weight="700" fill="#0f2a4a">Waterfall</text>
+    <text x="1400" y="482" fill="#333">1. Lender  $9,144</text><text x="1400" y="520" fill="#333">2. Protocol  $10</text><text x="1400" y="558" fill="#333">3. Seller  $846 + bond</text>
+  </g>
+  <g stroke="#0f2a4a" stroke-width="4" fill="none" marker-end="url(#a)">
+    <path d="M340 210 H452"/><path d="M760 210 H872"/><path d="M1180 210 H1252"/>
+    <path d="M610 270 V422"/><path d="M760 495 H872"/><path d="M1200 495 H1290"/>
+  </g>
+  <text x="800" y="650" text-anchor="middle" font-size="26" fill="#b42318" font-weight="700">AI can flag risk, never approve · 5 attacks blocked live on HashKey Chain testnet</text>
+</svg>
