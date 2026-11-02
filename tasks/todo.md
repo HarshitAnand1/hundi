@@ -1,6 +1,6 @@
 # Plan: Layer L0 (submittable core)
 
-Written 2026-11-01 14:30 IST. Deadline 21:30 IST (submit target 18:30). ~7 h left, so the
+Written 2026-11-01 14:30 IST. Deadline 21:30 IST on 2026-11-02 (corrected; submit target 20:45 on 2 Nov). ~7 h left, so the
 handoff's schedule is compressed: phases A–F run today and L1 is cut down to what fits.
 Status: AWAITING APPROVAL. No code yet.
 

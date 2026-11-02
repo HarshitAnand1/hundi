@@ -37,3 +37,5 @@ the official document wins; record the correction here.
 | 2026-11-01 18:10 | Self-relay payment = buyer wallet ERC-20 transfer of USDC.e to the vault, only after verifyCart passes; HSP gateway rail not wired in L0, webhook returns 501 | No HSP credentials or confirmed wire format yet; refuse unauthenticated webhooks rather than trust them | HANDOFF 7 |
 | 2026-11-01 18:10 | Underwriter memo is a deterministic template, no LLM call in L0 | LLM may only explain; nothing to gain from a model call under time pressure | HANDOFF 8 |
 | 2026-11-01 18:10 | scripts/e2e.ts runs happy path + duplicate invoice (agent and on-chain bypass) + payee swap (invoice with prompt injection, and merchant-signed cart) + tampered cart; local run on anvil passes | L0 scenario list | todo Phase D |
+| 2026-11-02 18:15 | Deadline is 2026-11-02 21:30 IST (user confirmed), not 1 Nov; earlier entry superseded | User statement; matches the event page's sidebar widget | event page |
+| 2026-11-02 18:15 | Deployer = fresh burner from `cast wallet new`, never a wallet holding other assets | Key sits in plaintext .env; isolates risk and keeps on-chain history clean | HANDOFF 12.9 |
