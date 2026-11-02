@@ -14,7 +14,7 @@ No mainnet deployment (team decision). Testnet settlement token is a labelled mo
 | LLM never approves; prompt injection in invoice text cannot change a decision | `verifyInvoice` (LLM signal can only add `LLM_RISK_FLAG`); SDK injection tests; e2e attack | Real (code + tests); no LLM is called in L0 |
 | Buyer agent refuses carts not paying the accepted vault | `verifyCart` `PAYTO_NOT_VAULT`; SDK tests; e2e attack | Real on testnet |
 | Payment through HSP | Self-relay transfer only; gateway adapter not built | **Simulated** (self-relay, labelled) |
-| HSP accepts a contract address as `pay_to` | Not tested against HSP | Roadmap / [VERIFY] |
+| HSP accepts a contract address as `pay_to` | HSP guide: `create_order` takes a caller-supplied `pay_to` (any 42-char EVM address) and EIP-3009 transfers can credit a contract. Not executed against HSP | Designed; not run (QA allowlisting not confirmed in time) |
 | Delivery attestation | EIP-191 signature from a simulated logistics agent | **Simulated** |
 | Underwriter memo | Deterministic template from the numbers; no model call | Real (template) |
 | Late interest and default with bond forfeiture | Vault unit tests | Tested in Foundry only (not run on testnet) |
@@ -35,7 +35,8 @@ No mainnet deployment (team decision). Testnet settlement token is a labelled mo
 ## Unverified technical assumptions
 - Testnet chain id 133 confirmed by RPC; contracts compiled for Cancun deployed and ran the full lifecycle there. Mainnet id 177: [VERIFY], unused.
 - Real USDC.e not used: testnet runs on MockUSDCe (the event's official test USDC is Sepolia-only).
-- HSP cart format, ES256K merchant signature, relayer address, webhook scheme: not confirmed; not used.
+- HSP flow now confirmed from the official guide (MCP tools, x402 v2, EIP-3009 / Permit2, gateway broadcasts).
+  Not executed: QA access needs IP allowlisting, which was not confirmed before the deadline.
 - Contracts not source-verified on an explorer yet.
 
 ## What we did not do

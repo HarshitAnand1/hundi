@@ -84,6 +84,30 @@ these numbers against the chain.
 
 ## HSP integration, honestly
 
+**What the official HSP Agentic Payment guide confirms (QA, revision 2026-10-30).** HSP is exposed as an MCP
+server (Streamable HTTP, `https://mcp-qa.hashkeymerchant.com/`) with eight tools: `get_chain_config`,
+`create_order`, `get_order`, `prepare_payment`, `finalize_payment`, `estimate_fee`, `submit_payment`,
+`query_payment`. Orders take a caller-supplied `pay_to` (the server writes it into every x402 v2 payment
+method). The payer signs an EIP-3009 `TransferWithAuthorization` or Permit2 `PermitTransferFrom`, and the
+gateway broadcasts it. This is exactly the shape Hundi needs: `create_order(pay_to = vault)`.
+
+**How Hundi plugs in (designed, not yet run against HSP).**
+1. Desk calls `create_order` with `pay_to` = the CREATE2 vault from the stored acceptance and
+   `merchant_name` = the team name.
+2. Buyer agent calls `prepare_payment`, then runs the same deterministic check as `verifyCart` on what HSP
+   returns: `pay_to` must equal the accepted vault, the token must be the configured USDC.e from
+   `get_chain_config`, and `token_total_raw` must equal the amount due (plus gas only when
+   `gas_fee_advanced` is false). Anything else is refused before the wallet signs.
+3. Wallet signs the returned EIP-712 data; `finalize_payment` then `submit_payment`; `query_payment` until
+   `payment-finalized`; then the keeper calls the vault's permissionless `settle()`.
+
+**Why it is not live in this submission.** HSP QA requires IP allowlisting through the organisers' form, with
+email confirmation. Our request was not confirmed before the deadline (the endpoint returns a Cloudflare
+block for our IP), so the demo runs in labelled `HSP_MODE=self-relay`: the buyer wallet transfers USDC.e to
+the vault only after `verifyCart` passes.
+
+**Earlier notes (kept for the record):**
+
 - **Built:** the cart check that HSP needs (`verifyCart`: signature, hash, `pay_to` = accepted vault, amount,
   token, due date, vault state), with HSP's hashing and ES256K verification injected behind an interface.
 - **Running today:** `HSP_MODE=self-relay`. The desk signs carts with Hundi's own labelled scheme, and the

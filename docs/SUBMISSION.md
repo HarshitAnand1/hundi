@@ -18,9 +18,12 @@ the lender first, then the protocol fee, then the seller.
 
 **How HSP is used.** HSP settles a signed payment to whatever `pay_to` the merchant's cart names, with no
 escrow or splits. Hundi sets `pay_to` to the vault and makes the buyer agent refuse any cart that does not
-pay the vault it accepted (8 named cart refusal codes, including payee swap and tampered cart). Honest
-status: the HSP gateway adapter is not wired yet; the demo runs in a labelled self-relay mode where the
-buyer wallet pays the vault directly, only after the same cart checks pass.
+pay the vault it accepted (8 named cart refusal codes, including payee swap and tampered cart). This maps
+directly onto HSP Agentic Payment: the desk calls `create_order` with `pay_to` = vault, and the buyer agent
+checks `prepare_payment`'s `pay_to`, token and `token_total_raw` before the wallet signs the EIP-3009
+authorization. Honest status: HSP QA access needs IP allowlisting, which was not confirmed before the
+deadline, so the demo runs in a labelled self-relay mode where the buyer wallet pays the vault directly,
+only after the same checks pass.
 
 **Architecture.** Solidity (Foundry, OpenZeppelin 5.7, immutable, no proxies): AcceptanceRegistry,
 ReceivableFactory, ReceivableVault, ERC-4626 LiquidityPool. TypeScript SDK (viem, zod): canonical hashing,
