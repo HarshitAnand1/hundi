@@ -15,8 +15,14 @@ pnpm e2e:local
 `pnpm e2e:local` starts anvil, deploys with a mock token, and prints a tx hash for every step plus a
 BLOCKED line for each attack. Live view: `pnpm -C apps/desk dev` → http://localhost:8787.
 
-## On-chain proof
-See [PROOF.md](PROOF.md) for deployed addresses and per-scenario transaction hashes.
+## On-chain proof (HashKey Chain testnet, chain 133)
+- Pool `0x469946b530392428e96A89C2a2988402b9C78a33`, factory `0x2eAf2e93B8DA4a49A1359f81989D61F551564AD1`,
+  registry `0x41B734aC251e552FAc7F3a2828d26f63c320b6BC`
+- Vault for the demo invoice `0xD7C2AB5c954ceb3e09f81eB596b0E73F02446B52`
+- Advance `0x4b7b027b…154080` · buyer payment `0x4f56bd9b…806706` · settle `0x36f5130e…84af37`
+- Every hash, the waterfall and the five attack results: [PROOF.md](PROOF.md)
+
+Settlement token on testnet is a labelled mock USDC.e. No mainnet deployment.
 
 ## Five things worth checking
 | # | What | Where |

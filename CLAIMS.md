@@ -1,23 +1,23 @@
 # Claims and evidence
 
-Status values: **Real on mainnet** · **Real on testnet** · **Local chain only** · **Simulated** · **Roadmap**.
-Statuses marked _pending_ change once the deployment in PROOF.md exists.
+Status values: **Real on testnet** (HashKey Chain testnet, chain 133, tx hashes in PROOF.md) · **Simulated** · **Roadmap**.
+No mainnet deployment (team decision). Testnet settlement token is a labelled mock USDC.e.
 
 ## Product claims
 | Claim | Evidence | Status |
 | --- | --- | --- |
-| Vault address is fixed by the terms before funding (CREATE2, salt = termsHash) | `ReceivableFactory.predictVault`; factory tests; e2e checks the vault exists at the predicted address | Local chain only (_pending_ testnet / mainnet) |
-| Buyer acceptance is an EIP-712 signature recorded on-chain; ERC-1271 wallets supported | `AcceptanceRegistry`; registry tests incl. MockERC1271Wallet | Local chain only (_pending_) |
-| Lender is repaid before protocol and seller | `ReceivableVault._settle`; `invariant_lender_first`; waterfall fuzz; e2e asserts lender paid = SDK expectation | Local chain only (_pending_) |
-| Worked example: $8,820 at funding; $9,144 lender / $10 protocol / $846 + $180 bond to seller | `test/ReceivableVault.t.sol`, `packages/sdk/test/money.test.ts`, e2e output | Local chain only (_pending_) |
-| An invoice can be financed only once | `invoiceKeyUsed` in registry; `invariant_single_financing`; e2e duplicate attack (agent + on-chain) | Local chain only (_pending_) |
+| Vault address is fixed by the terms before funding (CREATE2, salt = termsHash) | `ReceivableFactory.predictVault`; factory tests; e2e checks the vault exists at the predicted address | Real on testnet |
+| Buyer acceptance is an EIP-712 signature recorded on-chain; ERC-1271 wallets supported | `AcceptanceRegistry`; registry tests incl. MockERC1271Wallet | Real on testnet |
+| Lender is repaid before protocol and seller | `ReceivableVault._settle`; `invariant_lender_first`; waterfall fuzz; e2e asserts lender paid = SDK expectation | Real on testnet |
+| Worked example: $8,820 at funding; $9,144 lender / $10 protocol / $846 + $180 bond to seller | `test/ReceivableVault.t.sol`, `packages/sdk/test/money.test.ts`, e2e output | Real on testnet |
+| An invoice can be financed only once | `invoiceKeyUsed` in registry; `invariant_single_financing`; e2e duplicate attack (agent + on-chain) | Real on testnet |
 | LLM never approves; prompt injection in invoice text cannot change a decision | `verifyInvoice` (LLM signal can only add `LLM_RISK_FLAG`); SDK injection tests; e2e attack | Real (code + tests); no LLM is called in L0 |
-| Buyer agent refuses carts not paying the accepted vault | `verifyCart` `PAYTO_NOT_VAULT`; SDK tests; e2e attack | Local chain only (_pending_) |
+| Buyer agent refuses carts not paying the accepted vault | `verifyCart` `PAYTO_NOT_VAULT`; SDK tests; e2e attack | Real on testnet |
 | Payment through HSP | Self-relay transfer only; gateway adapter not built | **Simulated** (self-relay, labelled) |
 | HSP accepts a contract address as `pay_to` | Not tested against HSP | Roadmap / [VERIFY] |
 | Delivery attestation | EIP-191 signature from a simulated logistics agent | **Simulated** |
 | Underwriter memo | Deterministic template from the numbers; no model call | Real (template) |
-| Late interest and default with bond forfeiture | Vault unit tests | Tested in Foundry only |
+| Late interest and default with bond forfeiture | Vault unit tests | Tested in Foundry only (not run on testnet) |
 | MCP server for other agents | — | Roadmap |
 | Agent card at `/.well-known/agent-card.json` | `apps/desk/src/server.ts` | Real (local server) |
 
@@ -31,10 +31,11 @@ Statuses marked _pending_ change once the deployment in PROOF.md exists.
 | Typical invoice discounting 5–8% p.a. | One secondary article | [VERIFY], not a guarantee |
 
 ## Unverified technical assumptions
-- HashKey Chain IDs 133 (testnet) / 177 (mainnet) and Cancun EVM support: [VERIFY] at deploy (`cast chain-id`).
-- USDC.e address: taken from official token docs at deploy time; recorded in `contracts/deployments/<id>.json`.
+- Testnet chain id 133 confirmed by RPC; contracts compiled for Cancun deployed and ran the full lifecycle there. Mainnet id 177: [VERIFY], unused.
+- Real USDC.e not used: testnet runs on MockUSDCe (the event's official test USDC is Sepolia-only).
 - HSP cart format, ES256K merchant signature, relayer address, webhook scheme: not confirmed; not used.
-- Blockscout verifier URL for `forge --verify`: unconfirmed.
+- Contracts not source-verified on an explorer yet.
 
 ## What we did not do
-No Slither, no independent audit, no eval set, no HSP gateway payment, no legal or regulatory claims.
+No mainnet deployment, no real USDC.e, no Slither, no independent audit, no eval set, no HSP gateway payment,
+no legal or regulatory claims.

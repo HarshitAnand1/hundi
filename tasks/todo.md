@@ -41,7 +41,7 @@ Files:
 - `apps/desk/` — Fastify + SQLite: issue/accept/advance/pay endpoints, webhook, keeper, SSE event stream
 - `scripts/e2e.ts` — L0 scenarios: happy path, duplicate invoice, payee swap, tampered cart (others later); prints tx hashes
 
-## Phase E: deploy + minimal dashboard (19:00 → 20:30)
+## Phase E: deploy + minimal dashboard — DONE 2 Nov: testnet 133 deploy + e2e PASS (PROOF.md); mainnet skipped (team decision)
 - [ ] Deploy + verify on Blockscout (mainnet if confirmed, otherwise testnet; label honestly)
 - [ ] Run one real lifecycle; hashes into PROOF.md
 - `apps/web/` — Next.js: timeline + live waterfall table from events (fallback: single static page reading the desk SSE stream if time is short)

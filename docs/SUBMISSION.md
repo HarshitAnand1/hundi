@@ -28,14 +28,16 @@ EIP-712, verifyInvoice, verifyCart. Desk: seller, logistics, buyer, underwriter 
 dashboard, A2A agent card.
 
 **Real vs simulated.** Real: contracts, acceptance, CREATE2 vault binding, advance, waterfall, on-chain
-duplicate-invoice block (see PROOF.md for network). Simulated: delivery attestation (signed by a simulated
+duplicate-invoice block, all live on HashKey Chain testnet (chain 133) with tx hashes in PROOF.md.
+Testnet uses a labelled mock USDC.e; no mainnet deployment. Simulated: delivery attestation (signed by a simulated
 logistics agent), HSP gateway (self-relay). Not done: Slither / audit, eval set, MCP server. Full table in
 CLAIMS.md.
 
 **Roadmap.** HSP gateway adapter; MCP server so any agent can issue, accept and pay invoices; GST e-invoice
 and e-way bill evidence; per-seller merchants; licensed lending partners.
 
-**Links.** GitHub: https://github.com/HarshitAnand1/hundi · PROOF.md · JUDGES.md · verified contracts
-(add Blockscout links after mainnet deploy) · demo video (add when recorded)
+**Links.** GitHub: https://github.com/HarshitAnand1/hundi · PROOF.md · JUDGES.md · testnet contracts: pool
+0x469946b530392428e96A89C2a2988402b9C78a33, factory 0x2eAf2e93B8DA4a49A1359f81989D61F551564AD1, registry
+0x41B734aC251e552FAc7F3a2828d26f63c320b6BC · demo video (add when recorded)
 
 **Team.** _names and roles: to fill_

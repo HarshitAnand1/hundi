@@ -8,6 +8,9 @@ acceptance. A lending pool advances 90% to the seller in one transaction. At mat
 lands in a per-invoice vault whose address was fixed before the loan was made, and the vault's code pays
 the lender first, then the protocol fee, then the seller.
 
+> **Live on HashKey Chain testnet (chain 133):** full lifecycle and five blocked attacks, every tx hash in
+> [PROOF.md](PROOF.md). Vault `0xD7C2AB5c954ceb3e09f81eB596b0E73F02446B52`, pool `0x469946b530392428e96A89C2a2988402b9C78a33`.
+
 > Prototype. No legal effect, no regulatory approval, not a TReDS replacement. See [CLAIMS.md](CLAIMS.md)
 > for what is real, what is simulated and what is roadmap.
 
@@ -56,8 +59,8 @@ pnpm e2e:local                       # anvil + mock token: full lifecycle, 5 att
 
 Watch it live: `pnpm -C apps/desk dev`, open http://localhost:8787, then run `pnpm e2e:local` again.
 
-On HashKey Chain: deploy with `contracts/script/Deploy.s.sol` (see [JUDGES.md](JUDGES.md)), then
-`RPC_URL=... DEPLOYER_PRIVATE_KEY=... pnpm e2e`.
+On HashKey Chain testnet: `cd contracts && DEPLOY_MOCK_TOKEN=true forge script script/Deploy.s.sol --rpc-url $RPC --broadcast --private-key $KEY`,
+then from the root `RPC_URL=$RPC DEPLOYER_PRIVATE_KEY=$KEY HSK_CHAIN_ID=133 pnpm e2e`. Use a fresh burner key.
 
 ## Architecture
 
