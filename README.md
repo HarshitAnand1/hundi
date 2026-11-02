@@ -152,6 +152,10 @@ still run in code, so a calling model can ask but cannot make a refused invoice 
 HSP gateway adapter; MCP over HTTP; GST e-invoice / e-way bill evidence instead of simulated delivery;
 per-seller merchants; transferable receivables; licensed lending partners.
 
+## Team
+
+Harshit Anand, Dnyananda Thorat, Khushbu Sharma.
+
 ## Licence
 
 MIT.

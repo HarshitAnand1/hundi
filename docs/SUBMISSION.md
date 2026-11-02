@@ -44,4 +44,4 @@ and e-way bill evidence; per-seller merchants; licensed lending partners.
 0x469946b530392428e96A89C2a2988402b9C78a33, factory 0x2eAf2e93B8DA4a49A1359f81989D61F551564AD1, registry
 0x41B734aC251e552FAc7F3a2828d26f63c320b6BC · demo video (add when recorded)
 
-**Team.** _names and roles: to fill_
+**Team.** Hundi: Harshit Anand, Dnyananda Thorat, Khushbu Sharma. HSP `merchant_name`: `Hundi`.
