@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hundi Desk</title>
+<style>
+  :root { --bg:#f7f7f5; --fg:#1b1b1b; --muted:#6b6b6b; --card:#fff; --line:#e3e3df; --ok:#16794c; --bad:#b42318; --accent:#2b5bd7; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#141414; --fg:#ececec; --muted:#9a9a9a; --card:#1d1d1d; --line:#2e2e2e; --ok:#4cc38a; --bad:#ff6b5e; --accent:#7aa2ff; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:14px/1.5 system-ui, sans-serif; }
+  main { max-width: 1000px; margin: 0 auto; padding: 24px 16px; }
+  h1 { font-size: 22px; margin: 0 0 4px; } h2 { font-size: 15px; margin: 24px 0 8px; }
+  .muted { color: var(--muted); }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; } td, th { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  th { font-weight:600; color:var(--muted); font-size:12px; } td.num { text-align:right; font-variant-numeric: tabular-nums; }
+  .ev { display:grid; grid-template-columns: 70px 150px 1fr; gap:8px; padding:6px 0; border-bottom:1px solid var(--line); }
+  .ev:last-child { border-bottom:0; } .kind { font-family: ui-monospace, monospace; font-size:12px; }
+  .blocked { color: var(--bad); } .settled { color: var(--ok); } a { color: var(--accent); }
+  code { font-size: 12px; word-break: break-all; }
+  @media (max-width: 640px) { .ev { grid-template-columns: 1fr; gap:0; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Hundi Desk</h1>
+  <p>Invoice financing where the buyer&#39;s payment goes to a per-invoice vault that repays the lender first. <a href="https://github.com/HarshitAnand1/hundi">GitHub</a></p>
+  <div class="muted" id="meta">Connecting…</div>
+  <h2>Receivables and waterfall</h2>
+  <div class="card"><table><thead><tr><th>Invoice</th><th>Vault</th><th class="num">Face</th><th class="num">Lender</th><th class="num">Protocol</th><th class="num">Seller (at settle)</th></tr></thead><tbody id="rx"></tbody></table></div>
+  <h2>Timeline</h2>
+  <div class="card" id="timeline"></div>
+</main>
+<script id="snapshot" type="application/json">{
+  "chainId": 133,
+  "receivables": {
+    "0x9153a8843aae9d03a49731f1ce792522031149d856c95984bf1d4d299bb4a7ab": {
+      "termsHash": "0x9153a8843aae9d03a49731f1ce792522031149d856c95984bf1d4d299bb4a7ab",
+      "invoice": {
+        "version": "hundi.invoice.v1",
+        "invoiceNumber": "INV-1793626752",
+        "issuedAt": 1793626752,
+        "dueDate": 1799933952,
+        "seller": {
+          "address": "0x3f036C149fD05CDdF7f51aFf1583179c790FB17f",
+          "name": "Surat Textiles Pvt Ltd"
+        },
+        "buyer": {
+          "address": "0xdAA9f48bFBe293d4637C84864B92B29da765a2DE",
+          "name": "Rotterdam Fabrics BV"
+        },
+        "token": "0x1B2957b8cc0635713bA8C566337609093877008D",
+        "amount": "10000000000n",
+        "currency": "USD",
+        "poReference": "PO-1793626752",
+        "goodsHash": "0x470955ecb07064c89cc54461b2e5a7c078afb46476fa781c962aa0955b92789a",
+        "payTo": "0x3f036C149fD05CDdF7f51aFf1583179c790FB17f"
+      },
+      "terms": {
+        "seller": "0x3f036C149fD05CDdF7f51aFf1583179c790FB17f",
+        "buyer": "0xdAA9f48bFBe293d4637C84864B92B29da765a2DE",
+        "token": "0x1B2957b8cc0635713bA8C566337609093877008D",
+        "faceAmount": "10000000000n",
+        "dueDate": "1799933952n",
+        "invoiceHash": "0xf70b2a62cccb921e83f5f23b9f5bb6fbe4bdec8a5518a66a2abdb4a24e9c6547",
+        "advanceBps": 9000,
+        "feeAnnualBps": 800,
+        "lateAnnualBps": 1800,
+        "bondBps": 200,
+        "protocolFeeBps": 10,
+        "graceSeconds": "259200n",
+        "defaultSeconds": "2592000n",
+        "pool": "0x469946b530392428e96A89C2a2988402b9C78a33",
+        "protocolTreasury": "0x08e8f2fE8182FBB3f57E17C21790cf0628cdf149"
+      },
+      "acceptance": {
+        "buyer": "0xdAA9f48bFBe293d4637C84864B92B29da765a2DE",
+        "seller": "0x3f036C149fD05CDdF7f51aFf1583179c790FB17f",
+        "token": "0x1B2957b8cc0635713bA8C566337609093877008D",
+        "faceAmount": "10000000000n",
+        "dueDate": "1799933952n",
+        "invoiceHash": "0xf70b2a62cccb921e83f5f23b9f5bb6fbe4bdec8a5518a66a2abdb4a24e9c6547",
+        "invoiceNumberHash": "0x9a44cc01bc9abbe653f18534cc049c6d77d828a450331146ea5b174b6a48d8f7",
+        "termsHash": "0x9153a8843aae9d03a49731f1ce792522031149d856c95984bf1d4d299bb4a7ab",
+        "vault": "0xD7C2AB5c954ceb3e09f81eB596b0E73F02446B52",
+        "nonce": "1793626752234n",
+        "expiry": "1793713152n"
+      },
+      "vault": "0xD7C2AB5c954ceb3e09f81eB596b0E73F02446B52",
+      "txs": {
+        "advance": "0x4b7b027bd10fb394092e86f863baa34a222e0c8a4209c99bfa18fef33d154080",
+        "pay": "0x4f56bd9ba72155d563a7a3701049e2c80697bf18077fb103be366205c5806706",
+        "settle": "0x36f5130e9ba0fccb026c9ac9618e9302a3e69e7b9b6420566a97755aab84af37"
+      }
+    }
+  },
+  "events": [
+    {
+      "at": 1793626768,
+      "kind": "info",
+      "summary": "Lender deposited 9000000000 into the pool",
+      "tx": "0x6d77a88a5c97e2326407daa878e08490091623b5c5b817109e041f1439723a70"
+    },
+    {
+      "at": 1793626779,
+      "kind": "invoice.issued",
+      "summary": "INV-1793626752 for 10000000000 issued by seller agent"
+    },
+    {
+      "at": 1793626779,
+      "kind": "delivery.attested",
+      "summary": "Delivery attested by 0xA42c5E7b3bA2a699c57B267067AF4fbc50b91b2F (simulated logistics)"
+    },
+    {
+      "at": 1793626780,
+      "kind": "invoice.accepted",
+      "termsHash": "0x9153a8843aae9d03a49731f1ce792522031149d856c95984bf1d4d299bb4a7ab",
+      "summary": "Buyer agent signed EIP-712 acceptance; vault 0xD7C2AB5c954ceb3e09f81eB596b0E73F02446B52"
+    },
+    {
+      "at": 1793626780,
+      "kind": "info",
+      "termsHash": "0x9153a8843aae9d03a49731f1ce792522031149d856c95984bf1d4d299bb4a7ab",
+      "summary": "Advance 9,000 (90% of 10,000), bond 180 held in the vault. Seller receives 8,820 now and 1,026 at maturity; total cost 154. Lender due 9,144 at maturity (8% p.a.), protocol 10."
+    },
+    {
+      "at": 1793626785,
+      "kind": "advance.funded",
+      "termsHash": "0x9153a8843aae9d03a49731f1ce792522031149d856c95984bf1d4d299bb4a7ab",
+      "summary": "Pool advanced to seller; vault 0xD7C2AB5c954ceb3e09f81eB596b0E73F02446B52 funded",
+      "tx": "0x4b7b027bd10fb394092e86f863baa34a222e0c8a4209c99bfa18fef33d154080"
+    },
+    {
+      "at": 1793626785,
+      "kind": "attack.blocked",
+      "termsHash": "0x9153a8843aae9d03a49731f1ce792522031149d856c95984bf1d4d299bb4a7ab",
+      "summary": "Duplicate invoice (agent): blocked (DUPLICATE_INVOICE)"
+    },
+    {
+      "at": 1793626786,
+      "kind": "attack.blocked",
+      "termsHash": "0x9153a8843aae9d03a49731f1ce792522031149d856c95984bf1d4d299bb4a7ab",
+      "summary": "Duplicate invoice (on-chain, agent bypassed): blocked (DuplicateInvoice)"
+    },
+    {
+      "at": 1793626786,
+      "kind": "attack.blocked",
+      "termsHash": "0x9153a8843aae9d03a49731f1ce792522031149d856c95984bf1d4d299bb4a7ab",
+      "summary": "Payee swap in invoice (with prompt injection): blocked (PAYEE_CHANGED)"
+    },
+    {
+      "at": 1793626786,
+      "kind": "attack.blocked",
+      "termsHash": "0x9153a8843aae9d03a49731f1ce792522031149d856c95984bf1d4d299bb4a7ab",
+      "summary": "Payee swap in merchant-signed cart: blocked (PAYTO_NOT_VAULT)"
+    },
+    {
+      "at": 1793626786,
+      "kind": "order.created",
+      "termsHash": "0x9153a8843aae9d03a49731f1ce792522031149d856c95984bf1d4d299bb4a7ab",
+      "summary": "Desk created order ord-1793626752 paying vault 0xD7C2AB5c954ceb3e09f81eB596b0E73F02446B52"
+    },
+    {
+      "at": 1793626787,
+      "kind": "attack.blocked",
+      "termsHash": "0x9153a8843aae9d03a49731f1ce792522031149d856c95984bf1d4d299bb4a7ab",
+      "summary": "Cart tampered after signing: blocked (CART_HASH_MISMATCH, AMOUNT_MISMATCH)"
+    },
+    {
+      "at": 1793626793,
+      "kind": "payment.sent",
+      "termsHash": "0x9153a8843aae9d03a49731f1ce792522031149d856c95984bf1d4d299bb4a7ab",
+      "summary": "Buyer paid 10000000000 to vault (self-relay transfer)",
+      "tx": "0x4f56bd9ba72155d563a7a3701049e2c80697bf18077fb103be366205c5806706"
+    },
+    {
+      "at": 1793626798,
+      "kind": "vault.settled",
+      "termsHash": "0x9153a8843aae9d03a49731f1ce792522031149d856c95984bf1d4d299bb4a7ab",
+      "tx": "0x36f5130e9ba0fccb026c9ac9618e9302a3e69e7b9b6420566a97755aab84af37",
+      "summary": "Waterfall: lender 9143999315, protocol 10000000, seller 1026000685",
+      "data": {
+        "lenderPaid": "9143999315n",
+        "protocolPaid": "10000000n",
+        "sellerPaid": "1026000685n",
+        "daysLate": "0n"
+      }
+    }
+  ]
+}</script>
+<script>
+  const EXPLORERS = { 177: "https://hsk.blockscout.com/tx/" }; // testnet explorer: [VERIFY]
+  const usd = (v) => v == null ? "–" : (Number(String(v).replace(/n$/, "")) / 1e6).toLocaleString("en-US", { maximumFractionDigits: 2 });
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  let chainId = null; const settled = {};
+  const txLink = (h) => !h ? "" : EXPLORERS[chainId] ? ` <a href="${EXPLORERS[chainId]}${h}" target="_blank" rel="noopener">tx</a>` : ` <code>${h.slice(0, 10)}…</code>`;
+  function renderRx(state) {
+    document.getElementById("rx").innerHTML = Object.values(state.receivables).map((r) => {
+      const s = settled[r.termsHash] || {};
+      return `<tr><td>${esc(r.invoice.invoiceNumber)}</td><td><code>${r.vault}</code></td><td class="num">${usd(r.terms.faceAmount)}</td>
+        <td class="num">${usd(s.lenderPaid)}</td><td class="num">${usd(s.protocolPaid)}</td><td class="num">${usd(s.sellerPaid)}</td></tr>`;
+    }).join("") || `<tr><td colspan="6" class="muted">No receivables yet. Run <code>pnpm e2e</code>.</td></tr>`;
+  }
+  function addEvent(ev) {
+    if (ev.kind === "vault.settled" && ev.data) settled[ev.termsHash] = ev.data;
+    const cls = ev.kind === "attack.blocked" || ev.kind.endsWith("refused") ? "blocked" : ev.kind === "vault.settled" ? "settled" : "";
+    const div = document.createElement("div"); div.className = "ev";
+    div.innerHTML = `<span class="muted">${new Date(ev.at * 1000).toLocaleTimeString()}</span><span class="kind ${cls}">${esc(ev.kind)}</span><span>${esc(ev.summary)}${txLink(ev.tx)}</span>`;
+    document.getElementById("timeline").prepend(div);
+  }
+  const state = JSON.parse(document.getElementById("snapshot").textContent);
+  chainId = state.chainId;
+  document.getElementById("meta").innerHTML = `HashKey Chain testnet (chain ${chainId}) · snapshot of the recorded run · mock USDC.e (labelled) · <a href="https://github.com/HarshitAnand1/hundi/blob/main/PROOF.md">PROOF.md</a>`;
+  for (const ev of state.events) addEvent(ev);
+  renderRx(state);
+</script>
+</body>
+</html>
