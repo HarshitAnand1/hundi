@@ -55,8 +55,13 @@ export async function connect(rpcUrl: string, expectedChainId?: number): Promise
     deployment,
     wallet: (account) => createWalletClient({ account, chain, transport: http(rpcUrl) }),
     confirm: async (hash) => {
-      const r = await pub.waitForTransactionReceipt({ hash });
+      // Public RPCs are load-balanced: a later read can hit a node that has not seen this block yet.
+      // Wait for an extra confirmation, then until the RPC we read from reports the receipt's block.
+      const r = await pub.waitForTransactionReceipt({ hash, confirmations: id === 31337 ? 1 : 2 });
       if (r.status !== "success") throw new Error(`tx ${hash} reverted`);
+      for (let i = 0; i < 30 && (await pub.getBlockNumber({ cacheTime: 0 })) < r.blockNumber + 1n; i++) {
+        await new Promise((ok) => setTimeout(ok, 500));
+      }
       return hash;
     },
   };

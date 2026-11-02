@@ -67,9 +67,11 @@ export async function runScenario(c: Chainish, roles: Roles, face: bigint, store
   const idle = await r.poolIdle();
   if (idle < advanceNeeded) {
     const need = advanceNeeded - idle;
-    const bal = await r.balanceOf(roles.operator.address);
-    if (bal < need + (d.tokenIsMock ? 0n : face)) {
-      throw new Error(`operator needs ${need + face} token base units (has ${bal}) to fund the pool and the buyer`);
+    // Mock token: we just minted, so skip the check (a lagging RPC node may still report 0).
+    const required = need + face;
+    const bal = d.tokenIsMock ? required : await r.balanceOf(roles.operator.address);
+    if (bal < required) {
+      throw new Error(`operator needs ${required} token base units (has ${bal}) to fund the pool and the buyer`);
     }
     await send("approvePool", op.writeContract({ address: d.token, abi: erc20Abi, functionName: "approve", args: [d.liquidityPool, need] }));
     await send("deposit", op.writeContract({ address: d.liquidityPool, abi: liquidityPoolAbi, functionName: "deposit", args: [need, roles.operator.address] }));

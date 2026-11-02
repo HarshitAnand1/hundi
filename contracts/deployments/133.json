@@ -1,0 +1,12 @@
+{
+  "acceptanceRegistry": "0x41B734aC251e552FAc7F3a2828d26f63c320b6BC",
+  "chainId": 133,
+  "deployedAtBlock": 35219830,
+  "guardian": "0x022A9421873509Bad1380D52587891D2658E236D",
+  "liquidityPool": "0x469946b530392428e96A89C2a2988402b9C78a33",
+  "receivableFactory": "0x2eAf2e93B8DA4a49A1359f81989D61F551564AD1",
+  "token": "0x1B2957b8cc0635713bA8C566337609093877008D",
+  "tokenIsMock": true,
+  "underwriter": "0x022A9421873509Bad1380D52587891D2658E236D",
+  "vaultImplementation": "0x37Fd0e787fD7318bf50B22Cd2f3BE836a43C64c4"
+}
