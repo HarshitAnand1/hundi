@@ -1,0 +1,24 @@
+{
+  "name": "@hundi/mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": { "hundi-mcp": "./src/server.ts" },
+  "scripts": {
+    "start": "tsx src/server.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hundi/desk": "workspace:*",
+    "@hundi/sdk": "workspace:*",
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "viem": "2.57.14",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3",
+    "vitest": "5.0.5"
+  }
+}

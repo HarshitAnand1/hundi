@@ -11,10 +11,15 @@
     "test:ts": "pnpm -r --if-present test",
     "typecheck": "pnpm -r --if-present typecheck",
     "e2e": "tsx scripts/e2e.ts",
+    "eval": "tsx eval/run.ts",
+    "mcp": "pnpm -s -C packages/mcp exec tsx src/server.ts",
+    "demo:local": "WITH_MCP=1 scripts/e2e-local.sh",
     "e2e:local": "scripts/e2e-local.sh",
-    "test:all": "pnpm test:contracts && pnpm typecheck && pnpm test:ts"
+    "test:all": "pnpm test:contracts && pnpm typecheck && pnpm test:ts && pnpm eval"
   },
   "devDependencies": {
-    "tsx": "4.20.6"
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "tsx": "4.20.6",
+    "viem": "2.57.14"
   }
 }

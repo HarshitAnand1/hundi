@@ -13,3 +13,4 @@ export RPC_URL="http://127.0.0.1:$PORT"
 export DEPLOYER_PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 (cd contracts && DEPLOY_MOCK_TOKEN=true forge script script/Deploy.s.sol --rpc-url "$RPC_URL" --broadcast --private-key "$DEPLOYER_PRIVATE_KEY" >/dev/null)
 pnpm exec tsx scripts/e2e.ts
+if [ "${WITH_MCP:-0}" = 1 ]; then pnpm exec tsx scripts/mcp-smoke.ts; fi

@@ -30,10 +30,11 @@ dashboard, A2A agent card.
 **Real vs simulated.** Real: contracts, acceptance, CREATE2 vault binding, advance, waterfall, on-chain
 duplicate-invoice block, all live on HashKey Chain testnet (chain 133) with tx hashes in PROOF.md.
 Testnet uses a labelled mock USDC.e; no mainnet deployment. Simulated: delivery attestation (signed by a simulated
-logistics agent), HSP gateway (self-relay). Not done: Slither / audit, eval set, MCP server. Full table in
+logistics agent), HSP gateway (self-relay). Also built: an MCP server (6 tools) so any agent can use Hundi, a 36-case adversarial eval (36/36, zero false
+accepts), and a triaged Slither run. Not done: independent audit, HSP gateway, mainnet. Full table in
 CLAIMS.md.
 
-**Roadmap.** HSP gateway adapter; MCP server so any agent can issue, accept and pay invoices; GST e-invoice
+**Roadmap.** HSP gateway adapter; MCP over HTTP; GST e-invoice
 and e-way bill evidence; per-seller merchants; licensed lending partners.
 
 **Links.** GitHub: https://github.com/HarshitAnand1/hundi · PROOF.md · JUDGES.md · testnet contracts: pool

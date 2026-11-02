@@ -46,19 +46,14 @@ async function revertName(run: () => Promise<unknown>): Promise<string | undefin
 }
 
 /**
- * L0 scenarios on a live chain: happy path, duplicate invoice, payee swap, tampered cart.
- * Every step is logged to the desk journal with its tx hash.
+ * Demo funding: the operator (LP) tops the pool up to one advance, and gives the buyer wallet gas and
+ * the face amount. Mock token: minted. Real USDC.e: transferred from the operator, which must hold it.
  */
-export async function runScenario(c: Chainish, roles: Roles, face: bigint, store = new Store(c.chain.id)): Promise<ScenarioReport> {
+export async function prepareFunds(c: Chainish, roles: Roles, face: bigint, store: Store, txs: Record<string, Hash> = {}): Promise<Record<string, Hash>> {
   const d = c.deployment;
   const r = reads(c);
   const op = c.wallet(roles.operator);
-  const txs: Record<string, Hash> = {};
   const send = async (label: string, p: Promise<Hash>) => (txs[label] = await c.confirm(await p));
-  const block = await c.pub.getBlock();
-  const now = Number(block.timestamp);
-  const runId = `${now}`;
-
   // ---- liquidity and wallets -------------------------------------------------------------
   const advanceNeeded = (face * 9000n) / 10_000n;
   if (d.tokenIsMock) {
@@ -90,6 +85,23 @@ export async function runScenario(c: Chainish, roles: Roles, face: bigint, store
         : op.writeContract({ address: d.token, abi: erc20Abi, functionName: "transfer", args: [roles.buyer.address, face] }),
     );
   }
+
+  return txs;
+}
+
+/**
+ * L0 scenarios on a live chain: happy path, duplicate invoice, payee swap, tampered cart.
+ * Every step is logged to the desk journal with its tx hash.
+ */
+export async function runScenario(c: Chainish, roles: Roles, face: bigint, store = new Store(c.chain.id)): Promise<ScenarioReport> {
+  const d = c.deployment;
+  const r = reads(c);
+  const txs: Record<string, Hash> = {};
+  const block = await c.pub.getBlock();
+  const now = Number(block.timestamp);
+  const runId = `${now}`;
+
+  await prepareFunds(c, roles, face, store, txs);
 
   // ---- agents ------------------------------------------------------------------------------
   const seller = new SellerAgent(roles.seller, "Surat Textiles Pvt Ltd");

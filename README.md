@@ -53,8 +53,8 @@ Requires Node 22, pnpm 10 and Foundry.
 
 ```bash
 git clone --recurse-submodules git@github.com:HarshitAnand1/hundi.git && cd hundi
-pnpm install && pnpm test:all        # 75 contract + 51 SDK + 4 desk tests
-pnpm e2e:local                       # anvil + mock token: full lifecycle, 5 attacks, tx hashes
+pnpm install && pnpm test:all        # 75 contract + 51 SDK + 4 desk tests + 36-case eval
+pnpm demo:local                      # anvil + mock token: lifecycle, 5 attacks, then the MCP server via a real MCP client
 ```
 
 Watch it live: `pnpm -C apps/desk dev`, open http://localhost:8787, then run `pnpm e2e:local` again.
@@ -73,6 +73,8 @@ then from the root `RPC_URL=$RPC DEPLOYER_PRIVATE_KEY=$KEY HSK_CHAIN_ID=133 pnpm
 | `packages/sdk` | Canonical invoice hashing, EIP-712, money maths mirroring the vault, `verifyInvoice` (12 refusal codes), `verifyCart` (8 refusal codes) |
 | `apps/desk` | Seller, logistics, buyer, underwriter, keeper and desk agents; journal + SSE; agent card |
 | `apps/web` | Live timeline and waterfall dashboard |
+| `packages/mcp` | MCP server (stdio): `issue_invoice`, `accept_invoice`, `request_advance`, `pay_invoice`, `get_receivable`, `list_receivables` |
+| `eval/` | 36-case adversarial answer key for the acceptance gate, and its scored runner |
 | `scripts/e2e.ts` | The lifecycle and attacks against any deployed chain |
 
 Worked example (HANDOFF 5.4): a $10,000 invoice due in 73 days, 90% advance, 8% p.a. fee, 2% bond.
@@ -97,9 +99,13 @@ these numbers against the chain.
   accounting), cross-language test vectors.
 - SDK: every refusal code has a test, plus prompt injection, payee swap, tampered cart, failing dependencies.
 - Live e2e: duplicate invoice blocked by the agent and, with the agent bypassed, by the chain.
+- Eval: 36 adversarial and benign invoices (prompt injection, BEC payee swaps, duplicates, inflated amounts,
+  forged signatures, schema smuggling, policy edges). **36/36 exact, 0 false accepts, 0 false refusals**:
+  [eval/RESULTS.md](eval/RESULTS.md).
+- Slither 0.11.3: 22 results, all triaged, no exploitable issue: [AUDIT.md](AUDIT.md).
 - The LLM boundary: no model output can approve anything. See `packages/sdk/src/verifyInvoice.ts`.
 
-Not done yet: Slither, independent audit ([AUDIT.md](AUDIT.md)), eval set, MCP server.
+Not done yet: an independent human audit.
 
 ## Limitations
 
@@ -107,10 +113,19 @@ One merchant of record for all sellers. Delivery proof is a signed attestation f
 agent. Demo role wallets are derived from one operator key. Pool solvency rests on caps, bounds and the
 bond, not on credit scoring. Stablecoin settlement does not remove rupee FX exposure.
 
+## Use it from your own agent (MCP)
+
+```json
+{ "mcpServers": { "hundi": { "command": "pnpm", "args": ["-s", "-C", "/path/to/hundi", "mcp"],
+  "env": { "RPC_URL": "…", "DEPLOYER_PRIVATE_KEY": "<burner>" } } } }
+```
+
+Any MCP client can then issue, accept, finance, pay and inspect receivables. The acceptance and cart gates
+still run in code, so a calling model can ask but cannot make a refused invoice pass.
+
 ## Roadmap
 
-HSP gateway adapter; MCP server (`issue_invoice`, `accept_invoice`, `request_advance`, `pay_invoice`,
-`get_receivable`, `list_receivables`); GST e-invoice / e-way bill evidence instead of simulated delivery;
+HSP gateway adapter; MCP over HTTP; GST e-invoice / e-way bill evidence instead of simulated delivery;
 per-seller merchants; transferable receivables; licensed lending partners.
 
 ## Licence

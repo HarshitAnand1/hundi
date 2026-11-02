@@ -54,4 +54,4 @@ Files:
 ## Explicitly cut from today (L1/L2 → 2–4 Nov, if submissions can be updated — check, don't assume)
 Full 70-test bar, Slither/AUDIT.md, eval set run twice, CI, MCP server, ERC-721 note,
 attack panel, evidence pack, late/default on mainnet.
-Exception: commit eval/cases.json answer key early if Session F has spare time.
+Done 2 Nov 19:40: eval set (36/36), MCP server (6 tools, stdio), Slither triage (AUDIT.md).

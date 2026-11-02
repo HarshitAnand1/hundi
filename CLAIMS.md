@@ -18,7 +18,9 @@ No mainnet deployment (team decision). Testnet settlement token is a labelled mo
 | Delivery attestation | EIP-191 signature from a simulated logistics agent | **Simulated** |
 | Underwriter memo | Deterministic template from the numbers; no model call | Real (template) |
 | Late interest and default with bond forfeiture | Vault unit tests | Tested in Foundry only (not run on testnet) |
-| MCP server for other agents | — | Roadmap |
+| MCP server for other agents (6 tools, stdio) | `packages/mcp`; `scripts/mcp-smoke.ts` drives it with a real MCP client: lifecycle settles, payee swap refused | Real (local chain); HTTP transport is roadmap |
+| Acceptance gate holds on 36 adversarial / benign cases | `eval/cases.json` (answer key), `eval/RESULTS.md`: 36/36, 0 false accepts, 0 false refusals | Real (deterministic, no model) |
+| Static analysis | Slither 0.11.3, 22 results triaged in AUDIT.md, no code change needed | Real |
 | Agent card at `/.well-known/agent-card.json` | `apps/desk/src/server.ts` | Real (local server) |
 
 ## Market statistics (source quality)
@@ -37,5 +39,5 @@ No mainnet deployment (team decision). Testnet settlement token is a labelled mo
 - Contracts not source-verified on an explorer yet.
 
 ## What we did not do
-No mainnet deployment, no real USDC.e, no Slither, no independent audit, no eval set, no HSP gateway payment,
-no legal or regulatory claims.
+No mainnet deployment, no real USDC.e, no independent human audit, no HSP gateway payment, no LLM call in
+the demo (the gate accepts an LLM risk signal as data), no legal or regulatory claims.

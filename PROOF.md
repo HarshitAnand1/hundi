@@ -65,5 +65,6 @@ Result line: `E2E PASS`. Desk journal of this run: `apps/desk/data/133.json` (vi
 Not applicable: no HSP gateway payment was made (self-relay mode, labelled).
 
 ## Tests
-`pnpm test:all`: 75 Foundry tests (incl. 2 fuzz, 6 invariants), 51 SDK tests, 4 desk tests, all passing.
+`pnpm test:all`: 75 Foundry tests (incl. 2 fuzz, 6 invariants), 51 SDK tests, 4 desk tests, and the 36-case
+eval (36/36), all passing. Slither triage in AUDIT.md.
 A fresh clone passes the README quick start.
